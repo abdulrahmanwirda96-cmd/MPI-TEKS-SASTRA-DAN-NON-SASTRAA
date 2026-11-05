@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Pembelajaran Interaktif (MPI)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #4F46E5 0%, #6366F1 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col justify-between min-h-screen">
+
+    <!-- Header Navigation -->
+    <header class="bg-indigo-700 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showSection('home')">
+                <div class="bg-white text-indigo-700 p-2.5 rounded-xl font-bold text-xl shadow-inner">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold leading-tight">MPI Digital App</h1>
+                    <p class="text-xs text-indigo-200">Media Pembelajaran Interaktif Terhubung Sheets</p>
+                </div>
+            </div>
+            
+            <nav class="mt-3 sm:mt-0 flex flex-wrap gap-2">
+                <button onclick="showSection('home')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-600 transition flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> Beranda
+                </button>
+                <button onclick="startQuizMode('berlatih')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-600 transition flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Berlatih
+                </button>
+                <button onclick="startQuizMode('bermain')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-600 transition flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad"></i> Bermain
+                </button>
+                <button onclick="showSection('petunjuk')" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-600 transition flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info"></i> Petunjuk
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
+
+        <!-- 1. HOME SECTION -->
+        <section id="sec-home" class="animate-fadeIn space-y-6">
+            <div class="glass-card rounded-3xl p-8 text-center relative overflow-hidden">
+                <div class="inline-block p-4 bg-indigo-50 text-indigo-600 rounded-full mb-4">
+                    <i class="fa-solid fa-rocket text-4xl"></i>
+                </div>
+                <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Selamat Datang di MPI Interaktif</h2>
+                <p class="text-slate-600 max-w-xl mx-auto mb-8 text-sm sm:text-base">
+                    Platform pembelajaran interaktif berbasis web yang terhubung langsung secara real-time dengan database Google Sheets untuk analisis kuis siswa secara otomatis.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <!-- Mode Berlatih Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-indigo-100 shadow-sm hover:shadow-md transition text-left flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold text-xl mb-4">
+                                <i class="fa-solid fa-pencil"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">Mode Berlatih</h3>
+                            <p class="text-xs text-slate-500 mt-1 mb-4">Latihan soal mandiri untuk memperdalam pemahaman materi tanpa tekanan waktu.</p>
+                        </div>
+                        <button onclick="startQuizMode('berlatih')" class="w-full btn-gradient text-white font-semibold py-2.5 rounded-xl text-sm">
+                            Mulai Berlatih
+                        </button>
+                    </div>
+
+                    <!-- Mode Bermain Card -->
+                    <div class="bg-white p-6 rounded-2xl border border-indigo-100 shadow-sm hover:shadow-md transition text-left flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-xl mb-4">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-slate-800">Mode Bermain</h3>
+                            <p class="text-xs text-slate-500 mt-1 mb-4">Uji kemampuan dalam bentuk tantangan kuis menyenangkan dengan perekaman skor akhir.</p>
+                        </div>
+                        <button onclick="startQuizMode('bermain')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl text-sm transition shadow-sm hover:shadow-md">
+                            Mulai Bermain
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. IDENTITY FORM SECTION -->
+        <section id="sec-identity" class="hidden animate-fadeIn">
+            <div class="glass-card max-w-md mx-auto rounded-3xl p-8 shadow-xl">
+                <div class="text-center mb-6">
+                    <div class="w-14 h-14 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3 font-bold text-2xl">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">Identitas Siswa</h3>
+                    <p class="text-xs text-slate-500">Isi identitas sebelum memulai pengerjaan kuis.</p>
+                </div>
+
+                <form id="student-form" onsubmit="handleIdentitySubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                        <input type="text" id="input-nama" required placeholder="Contoh: Budi Santoso" 
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Kelas / Rombel</label>
+                        <input type="text" id="input-kelas" required placeholder="Contoh: 5A / 8B" 
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                    </div>
+                    <button type="submit" class="w-full btn-gradient text-white py-3 rounded-xl font-bold text-sm shadow-md mt-4">
+                        Lanjutkan ke Kuis <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 3. QUIZ INTERFACE SECTION -->
+        <section id="sec-quiz" class="hidden animate-fadeIn">
+            <div class="glass-card rounded-3xl p-6 md:p-8 space-y-6">
+                <!-- Quiz Bar Info -->
+                <div class="flex justify-between items-center pb-4 border-b border-slate-200">
+                    <div>
+                        <span id="quiz-badge-mode" class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-full uppercase">Mode</span>
+                        <h4 id="quiz-student-name" class="text-xs text-slate-500 mt-1">Siswa: -</h4>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400 font-semibold block">Progres</span>
+                        <span id="quiz-progress" class="text-base font-bold text-indigo-600">Soal 1 dari 5</span>
+                    </div>
+                </div>
+
+                <!-- Question Text -->
+                <div>
+                    <h3 id="question-text" class="text-lg md:text-xl font-bold text-slate-800 leading-relaxed mb-6">
+                        Memuat pertanyaan...
+                    </h3>
+
+                    <!-- Options List -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- Dynamic options loaded via JS -->
+                    </div>
+                </div>
+
+                <!-- Question Nav Actions -->
+                <div class="flex justify-between items-center pt-4 border-t border-slate-200">
+                    <button id="btn-prev" onclick="navigateQuestion(-1)" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl font-medium text-sm hover:bg-slate-200 transition disabled:opacity-40">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Sebelumnya
+                    </button>
+                    <button id="btn-next" onclick="navigateQuestion(1)" class="btn-gradient text-white px-6 py-2.5 rounded-xl font-semibold text-sm shadow">
+                        Berikutnya <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                    <button id="btn-submit" onclick="submitQuiz()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl font-semibold text-sm shadow transition">
+                        Kirim Jawaban <i class="fa-solid fa-paper-plane ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. RESULT SECTION -->
+        <section id="sec-result" class="hidden animate-fadeIn">
+            <div class="glass-card rounded-3xl p-8 text-center max-w-lg mx-auto">
+                <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-3xl shadow-inner">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-800">Hasil Pengerjaan</h2>
+                <p class="text-xs text-slate-500 mt-1 mb-6">Data jawaban Anda telah diproses.</p>
+
+                <!-- Score Container -->
+                <div class="bg-indigo-50/70 p-6 rounded-2xl mb-6 border border-indigo-100">
+                    <div class="text-xs uppercase tracking-wider font-semibold text-indigo-500">Nilai Akhir</div>
+                    <div id="res-score" class="text-5xl font-black text-indigo-700 my-2">0</div>
+                    <div class="flex justify-center gap-6 mt-4 text-xs font-medium">
+                        <span class="text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">
+                            <i class="fa-solid fa-check-circle mr-1"></i> Benar: <strong id="res-correct">0</strong>
+                        </span>
+                        <span class="text-rose-600 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200">
+                            <i class="fa-solid fa-times-circle mr-1"></i> Salah: <strong id="res-wrong">0</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Sync Status Indicator -->
+                <div id="sync-status" class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-6 bg-slate-100 p-3 rounded-xl border border-slate-200">
+                    <i class="fa-solid fa-spinner fa-spin text-indigo-600"></i> Menyimpan hasil ke Google Sheets...
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button onclick="showSection('home')" class="w-full py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-xl text-sm transition">
+                        <i class="fa-solid fa-house mr-1"></i> Kembali ke Beranda
+                    </button>
+                    <button onclick="startQuizMode(currentMode)" class="w-full btn-gradient text-white py-2.5 font-semibold rounded-xl text-sm shadow">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Coba Lagi
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. INSTRUCTIONS / PETUNJUK SECTION -->
+        <section id="sec-petunjuk" class="hidden animate-fadeIn">
+            <div class="glass-card rounded-3xl p-8 max-w-2xl mx-auto">
+                <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-info text-indigo-600"></i> Petunjuk Penggunaan
+                </h3>
+                <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+                    <div class="p-4 bg-white rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-1">1. Mode Berlatih</h4>
+                        <p class="text-xs">Digunakan untuk latihan soal mandiri. Anda dapat memilih jawaban dan berpindah antar soal dengan bebas.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-1">2. Mode Bermain</h4>
+                        <p class="text-xs">Ujian / Tantangan kuis interaktif. Semua hasil pengerjaan, skor, serta rincian jawaban akan secara otomatis tersimpan di database Google Sheets Guru.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-1">3. Integrasi Database</h4>
+                        <p class="text-xs">Aplikasi ini terhubung langsung dengan Google Apps Script Web App tanpa memerlukan server tambahan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <p>© 2026 Media Pembelajaran Interaktif. Powered by Google Apps Script & GitHub Pages.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // =========================================================================
+        // DEKLARASI TAUTAN GOOGLE APPS SCRIPT WEB APP
+        // Ganti URL di bawah ini dengan URL Web App hasil deploy Google Apps Script Anda
+        // =========================================================================
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwldZMAAoF6btQJy6zN2kkVZERiXdtTlkqZ5SpO4aiDBD0eLdSYOqFi6OAhL17Y89Eg5A/exec";
+
+        // Application State
+        let currentMode = 'bermain'; // 'berlatih' or 'bermain'
+        let studentData = { nama: '', kelas: '' };
+        let questionsList = [];
+        let currentQuestionIndex = 0;
+        let studentAnswers = {}; // Map: questionId -> chosenOption ("A"/"B"/"C"/"D")
+
+        // Default Fallback Questions (if GAS_URL not set or fetching fails)
+        const fallbackQuestions = [
+            {
+                id: 1,
+                category: "semua",
+                questionText: "Berapakah hasil dari 15 + 27?",
+                optionA: "40",
+                optionB: "42",
+                optionC: "44",
+                optionD: "45",
+                correctAnswer: "B"
+            },
+            {
+                id: 2,
+                category: "semua",
+                questionText: "Organ tubuh manusia yang berfungsi memompa darah ke seluruh tubuh adalah...",
+                optionA: "Paru-paru",
+                optionB: "Hati",
+                optionC: "Jantung",
+                optionD: "Ginjal",
+                correctAnswer: "C"
+            },
+            {
+                id: 3,
+                category: "berlatih",
+                questionText: "Ibu kota baru Negara Republik Indonesia yang berada di Kalimantan Timur adalah...",
+                optionA: "Jakarta",
+                optionB: "Nusantara",
+                optionC: "Bandung",
+                optionD: "Surabaya",
+                correctAnswer: "B"
+            },
+            {
+                id: 4,
+                category: "bermain",
+                questionText: "Planet terbesar dalam sistem Tata Surya kita adalah...",
+                optionA: "Mars",
+                optionB: "Saturnus",
+                optionC: "Jupiter",
+                optionD: "Bumi",
+                correctAnswer: "C"
+            }
+        ];
+
+        // Section Router
+        function showSection(sectionId) {
+            const sections = ['sec-home', 'sec-identity', 'sec-quiz', 'sec-result', 'sec-petunjuk'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            const activeEl = document.getElementById(`sec-${sectionId}`);
+            if (activeEl) activeEl.classList.remove('hidden');
+        }
+
+        // Start Quiz Flow
+        function startQuizMode(mode) {
+            currentMode = mode;
+            studentAnswers = {};
+            currentQuestionIndex = 0;
+            showSection('identity');
+        }
+
+        // Handle Identity Form Submission
+        async function handleIdentitySubmit(e) {
+            e.preventDefault();
+            studentData.nama = document.getElementById('input-nama').value.trim();
+            studentData.kelas = document.getElementById('input-kelas').value.trim();
+
+            document.getElementById('quiz-badge-mode').innerText = `Mode: ${currentMode}`;
+            document.getElementById('quiz-student-name').innerText = `Siswa: ${studentData.nama} (${studentData.kelas})`;
+
+            // Load Questions from GAS or Fallback
+            await loadQuestions();
+            showSection('quiz');
+            renderQuestion();
+        }
+
+        // Fetch Questions from GAS Backend
+        async function loadQuestions() {
+            if (!GAS_URL || GAS_URL === "URL_GAS_ANDA_DISINI") {
+                console.warn("URL_GAS_ANDA_DISINI belum diganti. Menggunakan data soal lokal/fallback.");
+                filterAndSetQuestions(fallbackQuestions);
+                return;
+            }
+
+            try {
+                const response = await fetch(GAS_URL);
+                const result = await response.json();
+                if (result.status === "success" && result.data && result.data.length > 0) {
+                    filterAndSetQuestions(result.data);
+                } else {
+                    filterAndSetQuestions(fallbackQuestions);
+                }
+            } catch (err) {
+                console.error("Gagal mengambil data dari Google Apps Script, menggunakan fallback local data:", err);
+                filterAndSetQuestions(fallbackQuestions);
+            }
+        }
+
+        function filterAndSetQuestions(rawQuestions) {
+            // Filter questions according to selected mode or 'semua'
+            questionsList = rawQuestions.filter(q => 
+                q.category === 'semua' || q.category.toLowerCase() === currentMode.toLowerCase()
+            );
+
+            if (questionsList.length === 0) {
+                questionsList = rawQuestions; // fallback to all if filtered result empty
+            }
+        }
+
+        // Render Current Question Card
+        function renderQuestion() {
+            if (questionsList.length === 0) return;
+
+            const q = questionsList[currentQuestionIndex];
+            document.getElementById('quiz-progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${questionsList.length}`;
+            document.getElementById('question-text').innerText = `${currentQuestionIndex + 1}. ${q.questionText}`;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const options = [
+                { key: 'A', text: q.optionA },
+                { key: 'B', text: q.optionB },
+                { key: 'C', text: q.optionC },
+                { key: 'D', text: q.optionD }
+            ];
+
+            options.forEach(opt => {
+                const isSelected = studentAnswers[q.id] === opt.key;
+                const optBtn = document.createElement('button');
+                optBtn.className = `w-full text-left p-4 rounded-xl border transition flex items-center justify-between font-medium text-sm ${
+                    isSelected 
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-700 shadow-sm' 
+                        : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
+                }`;
+                optBtn.onclick = () => selectOption(q.id, opt.key);
+
+                optBtn.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-bold text-xs">
+                            ${opt.key}
+                        </span>
+                        <span>${opt.text}</span>
+                    </div>
+                    ${isSelected ? '<i class="fa-solid fa-circle-check text-indigo-600 text-lg"></i>' : ''}
+                `;
+                optionsContainer.appendChild(optBtn);
+            });
+
+            // Handle Navigation Buttons
+            document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === questionsList.length - 1) {
+                document.getElementById('btn-next').classList.add('hidden');
+                document.getElementById('btn-submit').classList.remove('hidden');
+            } else {
+                document.getElementById('btn-next').classList.remove('hidden');
+                document.getElementById('btn-submit').classList.add('hidden');
+            }
+        }
+
+        // Option Selection Handler
+        function selectOption(questionId, chosenKey) {
+            studentAnswers[questionId] = chosenKey;
+            renderQuestion();
+        }
+
+        // Question Navigation
+        function navigateQuestion(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < questionsList.length) {
+                currentQuestionIndex = newIndex;
+                renderQuestion();
+            }
+        }
+
+        // Calculate and Submit Quiz Results
+        async function submitQuiz() {
+            let correctCount = 0;
+            let wrongCount = 0;
+            const detailInputan = [];
+
+            questionsList.forEach(q => {
+                const chosen = studentAnswers[q.id] || "Tidak Dijawab";
+                const isCorrect = chosen.toUpperCase() === q.correctAnswer.toUpperCase();
+
+                if (isCorrect) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+
+                detailInputan.push({
+                    idSoal: q.id,
+                    soal: q.questionText,
+                    jawabanSiswa: chosen,
+                    kunci: q.correctAnswer,
+                    status: isCorrect ? "BENAR" : "SALAH"
+                });
+            });
+
+            const finalScore = Math.round((correctCount / questionsList.length) * 100);
+
+            // Update Result UI
+            document.getElementById('res-score').innerText = finalScore;
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+
+            showSection('result');
+
+            // Payload for Backend
+            const payload = {
+                nama: studentData.nama,
+                kelas: studentData.kelas,
+                mode: currentMode,
+                jumlahBenar: correctCount,
+                jumlahSalah: wrongCount,
+                nilai: finalScore,
+                detailInputan: detailInputan
+            };
+
+            // Send Data to GAS
+            await sendResultToGAS(payload);
+        }
+
+        // Post Data to Google Apps Script
+        async function sendResultToGAS(payload) {
+            const statusEl = document.getElementById('sync-status');
+            
+            if (!GAS_URL || GAS_URL === "URL_GAS_ANDA_DISINI") {
+                statusEl.className = "flex items-center justify-center gap-2 text-xs text-amber-700 bg-amber-50 p-3 rounded-xl border border-amber-200";
+                statusEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Mode Demo: URL_GAS_ANDA_DISINI belum diisi. Data tidak dikirim ke Google Sheets.`;
+                return;
+            }
+
+            try {
+                statusEl.className = "flex items-center justify-center gap-2 text-xs text-indigo-600 bg-indigo-50 p-3 rounded-xl border border-indigo-200";
+                statusEl.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan hasil ke Google Sheets...`;
+
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+
+                const resData = await response.json();
+                if (resData.status === "success") {
+                    statusEl.className = "flex items-center justify-center gap-2 text-xs text-emerald-700 bg-emerald-50 p-3 rounded-xl border border-emerald-200";
+                    statusEl.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> Berhasil disimpan ke Google Sheets!`;
+                } else {
+                    throw new Error(resData.message || "Gagal menyimpan");
+                }
+            } catch (err) {
+                console.error("Error sending data to GAS:", err);
+                statusEl.className = "flex items-center justify-center gap-2 text-xs text-rose-700 bg-rose-50 p-3 rounded-xl border border-rose-200";
+                statusEl.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600"></i> Gagal terhubung ke Google Sheets: ${err.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
